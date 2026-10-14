@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="One calm order book for every bakery and cafe order, with allergy notes clearly flagged.">
+  <title>Crumbly — Every order, in one place</title>
+  <style>
+    :root {
+      --cream: #fff8ed;
+      --paper: #ffffff;
+      --ink: #29251f;
+      --muted: #6f685f;
+      --orange: #ef713e;
+      --orange-dark: #c94f25;
+      --peach: #ffe1d1;
+      --mint: #dff3e8;
+      --yellow: #ffe9a9;
+      --line: #eadfd1;
+      --shadow: 0 14px 35px rgba(76, 48, 25, .09);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--cream); color: var(--ink);
+      font-family: ui-rounded, "Avenir Next", Avenir, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { width: min(100% - 32px, 1060px); margin-inline: auto; }
+    header { padding: 18px 0; }
+    .nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 900; font-size: 1.22rem; letter-spacing: -.04em; text-decoration: none; }
+    .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; background: var(--orange); color: white; font-size: 1.2rem; transform: rotate(-5deg); }
+    .nav-link { font-size: .9rem; font-weight: 750; text-decoration: none; color: var(--muted); }
+    .hero { padding: 38px 0 46px; }
+    .hero-grid { display: grid; gap: 32px; align-items: center; }
+    .eyebrow { display: inline-flex; gap: 7px; align-items: center; background: var(--mint); border-radius: 999px; padding: 7px 12px; color: #285a42; font-size: .78rem; font-weight: 850; letter-spacing: .02em; }
+    h1 { font-size: clamp(2.55rem, 11vw, 4.8rem); line-height: .99; letter-spacing: -.065em; margin: 20px 0 18px; max-width: 720px; }
+    h1 span { color: var(--orange-dark); }
+    .lead { color: var(--muted); font-size: 1.08rem; max-width: 560px; margin: 0 0 25px; }
+    .actions { display: flex; flex-direction: column; gap: 11px; align-items: stretch; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; border: 0; border-radius: 15px; padding: 13px 19px; font: inherit; font-weight: 850; text-decoration: none; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: white; background: var(--orange); box-shadow: 0 7px 0 #d65d30; }
+    .btn-primary:hover { background: var(--orange-dark); }
+    .btn-secondary { background: white; border: 1px solid var(--line); }
+    .tiny-note { color: var(--muted); font-size: .8rem; margin-top: 14px; }
+    .preview-wrap { position: relative; max-width: 420px; margin: 0 auto; width: 100%; }
+    .preview { background: white; border: 1px solid var(--line); padding: 16px; border-radius: 27px; box-shadow: var(--shadow); transform: rotate(1deg); }
+    .preview-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 2px 2px 14px; }
+    .preview-top strong { font-size: 1rem; }
+    .today { color: var(--muted); font-size: .74rem; }
+    .order { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 15px; margin-top: 9px; }
+    .order:nth-of-type(2) { background: #fff0e7; }
+    .order:nth-of-type(3) { background: #e8f6ee; }
+    .order:nth-of-type(4) { background: #fff5d7; }
+    .order:nth-of-type(5) { background: #f0eaff; }
+    .channel-icon { flex: 0 0 33px; height: 33px; border-radius: 11px; display: grid; place-items: center; background: rgba(255,255,255,.8); font-size: 1rem; }
+    .order-copy { min-width: 0; flex: 1; }
+    .order-copy strong { display: block; font-size: .85rem; }
+    .order-copy small { display: block; color: #696157; font-size: .72rem; margin-top: 2px; }
+    .tag { display: inline-block; margin-top: 6px; border-radius: 6px; background: #b62f2f; color: white; padding: 2px 6px; font-size: .62rem; font-weight: 900; letter-spacing: .03em; }
+    .time { white-space: nowrap; font-size: .68rem; color: var(--muted); }
+    .safe-strip { margin-top: 13px; background: #29251f; color: white; border-radius: 13px; padding: 11px 12px; display: flex; align-items: center; gap: 9px; font-size: .75rem; font-weight: 750; }
+    .float-note { position: absolute; right: -4px; bottom: -20px; background: var(--yellow); padding: 10px 13px; border-radius: 14px; box-shadow: var(--shadow); font-weight: 900; font-size: .78rem; transform: rotate(3deg); }
+    section { padding: 48px 0; }
+    .section-head { max-width: 650px; margin-bottom: 24px; }
+    h2 { font-size: clamp(1.9rem, 7vw, 3rem); letter-spacing: -.05em; line-height: 1.05; margin: 12px 0; }
+    .section-intro { color: var(--muted); margin: 0; }
+    .problem { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .quote-mark { color: var(--orange); font-size: 2.5rem; line-height: 1; font-weight: 900; }
+    blockquote { margin: 8px 0 12px; font-size: clamp(1.25rem, 5vw, 1.8rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.25; }
+    .quote-caption { color: var(--muted); font-size: .9rem; }
+    .pain-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .pain-pills span { background: var(--cream); border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: .78rem; font-weight: 750; }
+    .steps { display: grid; gap: 13px; }
+    .step { padding: 21px; border-radius: var(--radius); border: 1px solid var(--line); background: white; }
+    .step-number { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; background: var(--peach); color: #9b3c1b; font-weight: 950; }
+    .step:nth-child(2) .step-number { background: var(--mint); color: #285a42; }
+    .step:nth-child(3) .step-number { background: var(--yellow); color: #75530b; }
+    .step h3 { margin: 15px 0 6px; font-size: 1.12rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .94rem; }
+    .price-card { background: #29251f; color: white; border-radius: 26px; padding: 26px; position: relative; overflow: hidden; }
+    .price-card::after { content: "✳"; position: absolute; right: -7px; top: -36px; font-size: 9rem; color: rgba(255,255,255,.07); }
+    .price-card .eyebrow { background: #3d5547; color: #d7f7e4; }
+    .price { font-size: 3.6rem; font-weight: 950; letter-spacing: -.07em; margin: 14px 0 0; line-height: 1; }
+    .price small { font-size: 1rem; letter-spacing: 0; font-weight: 650; color: #ded6cc; }
+    .price-copy { color: #ded6cc; max-width: 500px; margin: 13px 0 20px; }
+    .price-list { padding: 0; margin: 0 0 24px; list-style: none; display: grid; gap: 8px; font-size: .92rem; }
+    .price-list li::before { content: "✓"; color: #a5e2bd; font-weight: 950; margin-right: 9px; }
+    .price-card .btn-primary { background: white; color: var(--ink); box-shadow: 0 7px 0 #cfc5b8; }
+    .waitlist { display: grid; gap: 20px; align-items: start; }
+    .form-card { background: white; border: 1px solid var(--line); padding: 22px; border-radius: var(--radius); }
+    label { display: block; font-size: .85rem; font-weight: 800; margin: 0 0 7px; }
+    input, select { width: 100%; min-height: 48px; border: 1px solid #d9cbbb; border-radius: 12px; padding: 12px; background: #fffdfa; color: var(--ink); font: inherit; margin-bottom: 15px; }
+    input:focus, select:focus { outline: 3px solid #ffd0ba; border-color: var(--orange); }
+    .privacy { color: var(--muted); font-size: .76rem; margin: 12px 0 0; }
+    .thank-you { display: none; border-radius: 14px; padding: 14px; margin-top: 14px; background: var(--mint); color: #24583d; font-weight: 800; }
+    footer { padding: 22px 0 35px; color: var(--muted); font-size: .8rem; }
+    .footer-inner { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 20px; }
+    @media (min-width: 650px) {
+      .wrap { width: min(100% - 48px, 1060px); }
+      .hero { padding: 65px 0 70px; }
+      .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 40px; }
+      .actions { flex-direction: row; align-items: center; }
+      .btn { min-height: 52px; }
+      section { padding: 68px 0; }
+      .steps { grid-template-columns: repeat(3, 1fr); }
+      .waitlist { grid-template-columns: 1fr .9fr; gap: 45px; }
+      .problem { padding: 34px; }
+      .price-card { padding: 36px; }
+      .footer-inner { flex-direction: row; justify-content: space-between; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#" aria-label="Crumbly home"><span class="brand-mark" aria-hidden="true">✳</span> crumbly</a>
+      <a class="nav-link" href="#how-it-works">How it works ↓</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">✦ Made for busy bakery days</span>
+          <h1>Every order in one place. <span>Nothing important missed.</span></h1>
+          <p class="lead">Crumbly brings phone, email, social messages and walk-ins into one simple order book—with allergy notes made hard to overlook.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="app.html">Try the demo <span aria-hidden="true">→</span></a>
+            <a class="btn btn-secondary" href="#waiting-list">Join the waiting list</a>
+          </div>
+          <p class="tiny-note">A calmer way to keep the counter, kitchen and orders in sync.</p>
+        </div>
+        <div class="preview-wrap" aria-label="Illustration of a unified order book">
+          <div class="preview">
+            <div class="preview-top"><strong>Today's order board</strong><span class="today">5 orders · 3 channels</span></div>
+            <div class="order">
+              <span class="channel-icon" aria-hidden="true">☎</span>
+              <div class="order-copy"><strong>Birthday cake · Jamie</strong><small>Phone · Pick-up 11:30</small><span class="tag">⚠ ALLERGY: PEANUT</span></div>
+              <span class="time">09:12</span>
+            </div>
+            <div class="order">
+              <span class="channel-icon" aria-hidden="true">✉</span>
+              <div class="order-copy"><strong>12 lunch rolls · Morgan</strong><small>Email · Pick-up 12:15</small></div>
+              <span class="time">09:26</span>
+            </div>
+            <div class="order">
+              <span class="channel-icon" aria-hidden="true">▣</span>
+              <div class="order-copy"><strong>Two coffee & walnut slices</strong><small>Social message · Today</small></div>
+              <span class="time">09:41</span>
+            </div>
+            <div class="order">
+              <span class="channel-icon" aria-hidden="true">🛍</span>
+              <div class="order-copy"><strong>Sourdough loaf · Walk-in</strong><small>Counter · Paid</small></div>
+              <span class="time">10:03</span>
+            </div>
+            <div class="safe-strip"><span aria-hidden="true">✓</span> Allergy notes stay visible on the order</div>
+          </div>
+          <div class="float-note">Less chasing. More baking. 🍞</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Sound familiar?</span>
+          <h2>Your orders are everywhere. Your team can't be.</h2>
+          <p class="section-intro">A busy morning shouldn't mean searching through messages while customers wait.</p>
+        </div>
+        <div class="problem">
+          <div class="quote-mark" aria-hidden="true">“</div>
+          <blockquote>“The phone's ringing, there's an order in my inbox, someone sent a message last night—and I just need to know what we're making and who needs what.”</blockquote>
+          <div class="quote-caption">The everyday reality for a small bakery or café team.</div>
+          <div class="pain-pills"><span>Orders in different places</span><span>Details copied by hand</span><span>Allergy notes easy to miss</span><span>Everyone asking for updates</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Simple by design</span>
+          <h2>From scattered messages to one clear list.</h2>
+          <p class="section-intro">No complicated setup. Just a shared view of the work ahead.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step-number">01</div><h3>Bring every order together</h3><p>Log orders from phone calls, email, social messages and walk-ins in the same place.</p></article>
+          <article class="step"><div class="step-number">02</div><h3>Make the important bits stand out</h3><p>See where an order came from, when it's due and any allergy notes at a glance.</p></article>
+          <article class="step"><div class="step-number">03</div><h3>Keep the whole team aligned</h3><p>Use one order board to check what's booked, what needs making and what is ready for collection.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <div class="price-card">
+          <span class="eyebrow">Straightforward pricing</span>
+          <h2>One small monthly cost. A clearer day.</h2>
+          <p class="price">€19 <small>/ month</small></p>
+          <p class="price-copy">A proposed early-access price for independent bakeries and cafés. Join the list to hear when Crumbly is ready.</p>
+          <ul class="price-list">
+            <li>One shared order board</li>
+            <li>Clear channel labels</li>
+            <li>Prominent allergy notes</li>
+            <li>Designed for phones and busy counters</li>
+          </ul>
+          <a class="btn btn-primary" href="#waiting-list">Get early access <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="waiting-list">
+      <div class="wrap waitlist">
+        <div>
+          <span class="eyebrow">Be first in line</span>
+          <h2>Want a calmer order rush?</h2>
+          <p class="section-intro">Join the waiting list for product updates and early access. This prototype form does not send or save your details anywhere.</p>
+        </div>
+        <div class="form-card">
+          <form id="waitlist-form">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="e.g. Alex" required>
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@yourbakery.ie" required>
+            <label for="business">What best describes your business?</label>
+            <select id="business" name="business" required>
+              <option value="" selected disabled>Choose one</option>
+              <option>Bakery</option>
+              <option>Café</option>
+              <option>Bakery and café</option>
+              <option>Other food business</option>
+            </select>
+            <button class="btn btn-primary" type="submit" style="width:100%">Join the waiting list <span aria-hidden="true">→</span></button>
+            <p class="privacy">Demo only: nothing is sent to a server or stored.</p>
+          </form>
+          <div class="thank-you" id="thank-you" role="status" aria-live="polite">You're on the demo list — thank you! No details were sent or saved. 🎉</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">✳</span> crumbly</a>
+      <span>Made for small teams who make good things.</span>
+      <span>© <span id="year"></span> Crumbly · Prototype</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Prototype only: prevent network submission and show a local thank-you message.
+    const form = document.getElementById('waitlist-form');
+    const thankYou = document.getElementById('thank-you');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      form.reset();
+      form.hidden = true;
+      thankYou.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
